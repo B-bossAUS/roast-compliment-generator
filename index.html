@@ -297,11 +297,11 @@
     <!-- API Key -->
     <div class="api-section">
       <button class="api-toggle" id="apiToggle" onclick="toggleApi()">
-        <span class="arrow">▶</span> Anthropic API Key
+        <span class="arrow">▶</span> Gemini API Key
       </button>
       <div class="api-inner" id="apiInner">
         <div class="field" style="margin-top:0; margin-bottom:0;">
-          <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" />
+          <input type="password" id="apiKey" placeholder="AIza..." autocomplete="off" />
         </div>
       </div>
     </div>
@@ -424,21 +424,18 @@
     const userPrompt = `The person's name is "${name}". Generate the ${mode} now.`;
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 256,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userPrompt }],
-        }),
-      });
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+            contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+            generationConfig: { maxOutputTokens: 256 },
+          }),
+        }
+      );
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -448,7 +445,7 @@
       }
 
       const data = await res.json();
-      const text = data?.content?.[0]?.text || '(No response — try again!)';
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '(No response — try again!)';
       showResult(mode, text);
     } catch (e) {
       showError(`Network error: ${e.message}`);
