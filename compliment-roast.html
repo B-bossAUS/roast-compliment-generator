@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compliment or Roast Me 🔥😇</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d1a;
+      --card: #16172b;
+      --neon-pink: #ff2d78;
+      --neon-cyan: #00f5ff;
+      --neon-yellow: #ffe600;
+      --neon-green: #39ff14;
+      --text: #f0f0ff;
+      --muted: #8888aa;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(255,45,120,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,245,255,0.10) 0%, transparent 60%);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 12px rgba(255,45,120,0.4));
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 0 3px rgba(0,245,255,0.15);
+    }
+
+    .field { margin-bottom: 18px; }
+
+    .api-section {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .api-toggle {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      margin-bottom: 0;
+      transition: color 0.2s;
+    }
+    .api-toggle:hover { color: var(--neon-cyan); }
+    .api-toggle .arrow { display: inline-block; transition: transform 0.2s; }
+    .api-toggle.open .arrow { transform: rotate(90deg); }
+
+    .api-inner { display: none; margin-top: 12px; }
+    .api-inner.visible { display: block; }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: clamp(0.95rem, 3vw, 1.15rem);
+      font-weight: 900;
+      border: none;
+      border-radius: 16px;
+      padding: 18px 10px;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:active { transform: scale(0.95); }
+
+    .btn-compliment {
+      background: linear-gradient(135deg, #00c6ff, #00f5ff);
+      color: #001a1a;
+      box-shadow: 0 4px 24px rgba(0,245,255,0.35);
+    }
+    .btn-compliment:hover {
+      box-shadow: 0 6px 32px rgba(0,245,255,0.6);
+      filter: brightness(1.08);
+    }
+
+    .btn-roast {
+      background: linear-gradient(135deg, #ff2d78, #ff8c00);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(255,45,120,0.35);
+    }
+    .btn-roast:hover {
+      box-shadow: 0 6px 32px rgba(255,45,120,0.6);
+      filter: brightness(1.08);
+    }
+
+    .btn-again {
+      width: 100%;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 1rem;
+    }
+    .btn-again:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--neon-yellow);
+      box-shadow: 0 0 16px rgba(255,230,0,0.2);
+    }
+
+    /* Result area */
+    .result-wrap {
+      margin-top: 28px;
+      display: none;
+    }
+    .result-wrap.visible { display: block; }
+
+    .result-box {
+      border-radius: 18px;
+      padding: 22px 20px;
+      font-size: 1.1rem;
+      line-height: 1.65;
+      font-weight: 700;
+      position: relative;
+      animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    .result-compliment {
+      background: linear-gradient(135deg, rgba(0,198,255,0.15), rgba(0,245,255,0.08));
+      border: 2px solid rgba(0,245,255,0.3);
+      color: #b0faff;
+    }
+
+    .result-roast {
+      background: linear-gradient(135deg, rgba(255,45,120,0.15), rgba(255,140,0,0.08));
+      border: 2px solid rgba(255,45,120,0.35);
+      color: #ffbdd0;
+    }
+
+    .result-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+      opacity: 0.7;
+    }
+
+    .result-text { min-height: 2em; }
+
+    /* Loading dots */
+    .loading-dots span {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: bounce 1s infinite;
+    }
+    .loading-dots span:nth-child(1) { background: var(--neon-cyan); animation-delay: 0s; }
+    .loading-dots span:nth-child(2) { background: var(--neon-pink); animation-delay: 0.18s; }
+    .loading-dots span:nth-child(3) { background: var(--neon-yellow); animation-delay: 0.36s; }
+
+    /* Confetti burst (emoji particles) */
+    .burst {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.6rem;
+      animation: burstFly 1.1s ease-out forwards;
+      z-index: 999;
+    }
+
+    /* Shake animation for roast */
+    @keyframes shake {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-6px) rotate(-1deg)}
+      40%{transform:translateX(6px) rotate(1deg)}
+      60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+    }
+    .shaking { animation: shake 0.5s ease; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.85) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%,80%,100% { transform: translateY(0); }
+      40%          { transform: translateY(-10px); }
+    }
+
+    @keyframes burstFly {
+      0%   { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+    }
+
+    .error-msg {
+      color: #ff8080;
+      font-size: 0.9rem;
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(255,60,60,0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(255,60,60,0.25);
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+
+    footer {
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-align: center;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Compliment or Roast Me</h1>
+  <p class="subtitle">AI-powered praise & playful burns ✨</p>
+
+  <div class="card">
+
+    <!-- API Key -->
+    <div class="api-section">
+      <button class="api-toggle" id="apiToggle" onclick="toggleApi()">
+        <span class="arrow">▶</span> Anthropic API Key
+      </button>
+      <div class="api-inner" id="apiInner">
+        <div class="field" style="margin-top:0; margin-bottom:0;">
+          <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Name -->
+    <div class="field">
+      <label for="nameInput">Your name</label>
+      <input type="text" id="nameInput" placeholder="e.g. Alex" maxlength="40" />
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button class="btn btn-compliment" onclick="generate('compliment')">😇 Compliment Me</button>
+      <button class="btn btn-roast"      onclick="generate('roast')">🔥 Roast Me</button>
+    </div>
+
+    <!-- Error -->
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-box" id="resultBox">
+        <div class="result-label" id="resultLabel"></div>
+        <div class="result-text" id="resultText"></div>
+      </div>
+      <button class="btn btn-again" id="againBtn" onclick="goAgain()">🔄 Go again</button>
+    </div>
+
+  </div>
+
+  <footer>Your API key stays in your browser. Nothing is stored.</footer>
+
+<script>
+  let lastMode = null;
+
+  function toggleApi() {
+    const inner = document.getElementById('apiInner');
+    const toggle = document.getElementById('apiToggle');
+    inner.classList.toggle('visible');
+    toggle.classList.toggle('open');
+  }
+
+  function setLoading(mode) {
+    const wrap = document.getElementById('resultWrap');
+    const box  = document.getElementById('resultBox');
+    const label = document.getElementById('resultLabel');
+    const text  = document.getElementById('resultText');
+    const again = document.getElementById('againBtn');
+    const errMsg = document.getElementById('errorMsg');
+
+    errMsg.classList.remove('visible');
+    wrap.classList.add('visible');
+    again.style.display = 'none';
+
+    box.className = 'result-box ' + (mode === 'compliment' ? 'result-compliment' : 'result-roast');
+    label.textContent = mode === 'compliment' ? '😇 Your compliment' : '🔥 Your roast';
+    text.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+    // re-trigger animation
+    box.style.animation = 'none';
+    void box.offsetWidth;
+    box.style.animation = '';
+  }
+
+  function showResult(mode, content) {
+    const text  = document.getElementById('resultText');
+    const again = document.getElementById('againBtn');
+    text.textContent = content;
+    again.style.display = 'block';
+
+    // trigger re-animation
+    const box = document.getElementById('resultBox');
+    box.style.animation = 'none';
+    void box.offsetWidth;
+    box.style.animation = 'popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both';
+
+    if (mode === 'roast') {
+      box.classList.add('shaking');
+      setTimeout(() => box.classList.remove('shaking'), 600);
+    }
+
+    spawnBurst(mode);
+  }
+
+  function showError(msg) {
+    const errMsg = document.getElementById('errorMsg');
+    errMsg.textContent = msg;
+    errMsg.classList.add('visible');
+    const wrap = document.getElementById('resultWrap');
+    wrap.classList.remove('visible');
+  }
+
+  async function generate(mode) {
+    const name = document.getElementById('nameInput').value.trim();
+    const key  = document.getElementById('apiKey').value.trim();
+
+    if (!name) {
+      document.getElementById('nameInput').focus();
+      document.getElementById('nameInput').style.borderColor = 'var(--neon-pink)';
+      setTimeout(() => document.getElementById('nameInput').style.borderColor = '', 1200);
+      return;
+    }
+    if (!key) {
+      // open the API section if closed
+      const inner = document.getElementById('apiInner');
+      if (!inner.classList.contains('visible')) toggleApi();
+      document.getElementById('apiKey').focus();
+      document.getElementById('apiKey').style.borderColor = 'var(--neon-pink)';
+      setTimeout(() => document.getElementById('apiKey').style.borderColor = '', 1200);
+      return;
+    }
+
+    lastMode = mode;
+    setLoading(mode);
+
+    const systemPrompt = mode === 'compliment'
+      ? `You are a warm, enthusiastic hype machine. Generate a single, funny and heartfelt personalised compliment for the person using their name. Keep it 2-4 sentences, uplifting, specific-sounding (make up plausible-sounding details), and a little over-the-top in a fun way. End with an emoji or two.`
+      : `You are a playful comedy roast writer. Generate a single, funny personalised roast for the person using their name. Keep it 2-4 sentences, witty and absurdist — the kind of thing that makes someone laugh and groan at the same time. Absolutely no genuinely mean, harmful, or offensive content. Think: dad-joke energy meets light sarcasm. End with a fire emoji.`;
+
+    const userPrompt = `The person's name is "${name}". Generate the ${mode} now.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 256,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }],
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        const detail = err?.error?.message || `HTTP ${res.status}`;
+        showError(`API error: ${detail}`);
+        return;
+      }
+
+      const data = await res.json();
+      const text = data?.content?.[0]?.text || '(No response — try again!)';
+      showResult(mode, text);
+    } catch (e) {
+      showError(`Network error: ${e.message}`);
+    }
+  }
+
+  function goAgain() {
+    if (lastMode) generate(lastMode);
+  }
+
+  function spawnBurst(mode) {
+    const emojis = mode === 'compliment'
+      ? ['✨','🌟','💫','🎉','💖','🥳','🌈','🦄']
+      : ['🔥','💀','😂','💥','🤌','👀','💣','😭'];
+
+    for (let i = 0; i < 12; i++) {
+      const el = document.createElement('span');
+      el.className = 'burst';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+      const cx = window.innerWidth  * 0.5;
+      const cy = window.innerHeight * 0.5;
+      const angle = (Math.random() * 2 * Math.PI);
+      const dist  = 80 + Math.random() * 160;
+
+      el.style.left = cx + 'px';
+      el.style.top  = cy + 'px';
+      el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+      el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+      el.style.animationDelay = (Math.random() * 0.15) + 's';
+
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1400);
+    }
+  }
+
+  // Allow Enter key on name field to trigger last-used mode or compliment
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('nameInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') generate(lastMode || 'compliment');
+    });
+  });
+</script>
+</body>
+</html>
